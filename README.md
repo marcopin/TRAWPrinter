@@ -2,15 +2,15 @@
 
 **Delphi component for RAW or direct printing.**
 
-## Pendahuluan
+## Introduction
 
-Mencoba menjawab masalah pencetakan mode teks secara langsung (*raw/direct text printing*) yang sempat dibahas di milis Delphindo beberapa hari yg lalu, saya mencoba memberikan solusinya berupa komponen Delphi. Komponen ini bernama **TRAWPrinter**. Awalnya komponen dibuat oleh Przemyslaw Jankowski (v.1.0) yg hanya berisi fungsi2 dasar pencetakan teks di win32. Kemudian saya kembangkan sedemikian rupa sehingga bisa digunakan lebih mudah dan mendukung pencetakan ke *IBM Passbook* dan *Epson LX* series printer secara *built-in*. Sebenarnya komponen ini sudah saya buat dan pakai sejak tahun 2002 untuk pencetakan kwitansi ke *IBM Passbook* printer (v.1.2). Kemudian beberapa hari yg lalu saya tambahkan dukungan pencetakan ke *Epson LX* series di v.1.5 ini.
+Trying to answer the problem of direct text mode printing (*raw/direct text printing*) which was discussed on the Delphindo mailing list a few days ago, I tried to provide a solution in the form of a Delphi component. This component is called **TRAWPrinter**. Initially a component created by Przemyslaw Jankowski (v.1.0) contained only the basic functions of text printing in win32. Then I developed it in such a way that it can be used more easily and supports printing to *IBM Passbook* and *Epson LX* series printers *built-in*. Actually, I have made and used this component since 2002 to print receipts to *IBM Passbook* printers (v.1.2). Then a few days ago I added printing support to the *Epson LX* series in this v.1.5.
 
-Berbeda dengan solusi umum pencetakan teks yg menggunakan cara mengirim teks langsung ke port printer (`LPT1:`), TRAWPrinter mengirim teks ke *spooler* printer di Windows. Akses ke *spooler* printer dari Delphi telah disediakan melalui unit WinSpool (unit standar). Keuntungan dari metode ini adalah printer yg kita tuju tidak harus terpasang di port `LPT1:`, printer yg terpasang di port lain pun (serial, USB, dlsb) tetap bisa diakses. Bahkan printer yg terpasang di jaringan (*shared printer*) juga bisa diakses dgn cara yg sama. Pengiriman data ke printer yg dituju adalah menjadi tugas dari *spooler* printer. Sehingga aplikasi di 2 komputer (atau lebih) bisa menggunakan 1 printer secara bersama-sama, dgn memanfaatkan *printer sharing*. Menarik bukan? :)
+Unlike the common text printing solutions which use text to be sent directly to the printer port (`LPT1:`), TRAWPrinter sends text to the printer *spooler* in Windows. Access to the printer *spooler* from Delphi has been provided via the WinSpool unit (default unit). The advantage of this method is that the printer we are aiming for does not have to be installed on the `LPT1:` port, even printers installed on other ports (serial, USB, etc.) can still be accessed. Even printers that are installed on the network (*shared printer*) can also be accessed in the same way. Sending data to the intended printer is the job of the *spooler* printer. So that applications on 2 computers (or more) can use 1 printer together, by using *printer sharing*. Interesting right? :)
 
-## Penggunaan
+## Usage
 
-Penggunaan komponen ini sangat mudah dan mirip dgn penggunaan unit Printers. Berikut adalah contoh penggunaan yg ada dalam aplikasi demo:
+The use of this component is very easy and similar to the use of the Printers unit. Here is an example of usage in the demo application:
 
 ```pascal
 procedure TForm1.Button1Click(Sender: TObject);
@@ -44,11 +44,11 @@ normal
 <left>left-aligned</left>
 ```
 
-Dan hasil pencetakannya ke printer *Epson LX-300+* adalah…
+And the result of printing it on the *Epson LX-300+* printer is...
 
-![](https://github.com/git-bee/TRAWPrinter/blob/master/output.png "TRawPrinter output result")
+![](https://github.com/marcopin/TRAWPrinter/blob/master/output.png "TRawPrinter output result")
 
-Perhatikan isi memo dan bandingkan dengan hasil pencetakan! :) Betul… TRAWPrinter v.1.5 mendukung beberapa *tag* dasar HTML sehingga proses penyusunan teks yg akan dicetak menjadi lebih mudah. Anda gak perlu repot2 menghapalkan kode2 ESC untuk tiap jenis format teks. Fitur *tag* HTML ini hanya bisa digunakan untuk method `WriteList()`, sedang untuk method2 lainnya harus menggunakan cara seperti berikut:
+Look at the contents of the memo and compare it with the printing results! :) That's right… TRAWPrinter v.1.5 supports several basic HTML *tags* so that the process of compiling the text to be printed becomes easier. You don't need to bother memorizing the ESC codes for each type of text format. This HTML *tag* feature can only be used for the `WriteList()` method, while other methods must be used as follows:
 
 ```pascal
   // font settings
@@ -66,14 +66,14 @@ Perhatikan isi memo dan bandingkan dengan hasil pencetakan! :) Betul… TRAWPrin
   RAWPrinter1.Write('bold expanded roman');
 ```
 
-*See*… cara ini pun juga gak terlalu sulit, dan Anda tetap saja gak perlu menghapalkan kode2 ESC. *Property2* setting font dari TRAWPrinter gak jauh berbeda dari property TFont. Memang cara ini gak segampang menggunakan method `WriteList()` di atas. Tapi kadang -dalam situasi tertentu- kita membutuhkan kustomisasi yg lebih rumit daripada yg mampu dilakukan method `WriteList()`.
+*See*… this method isn't too difficult either, and you still don't need to memorize ESC codes. *Property2* The font setting from TRAWPrinter is not much different from the TFont property. Indeed, this method is not as easy as using the `WriteList()` method above. But sometimes -in certain situations- we need more complex customization than the `WriteList()` method is capable of.
 
-## Lebih Lanjut
+## Furthermore
 
-Bukan itu saja fitur2 yg ditawarkan TRAWPrinter, masih banyak lagi… seperti pencetakan berkolom, setting batas (margin) untuk kertas gak standar, opsi untuk menahan kertas setelah mencetak, dan lain sebagainya. Dan kalo bener2 dirasa perlu, Anda juga bisa mengganti kode2 ESC yg digunakan komponen, misalnya untuk jenis printer lain selain Epson dan IBM. Anda cukup membuat turunan dari class ini dan mendefinisikan ulang kode2 ESC yg sesuai dgn printer Anda.
+Those are not the only features offered by TRAWPrinter, there are many more… such as columnar printing, margin settings for non-standard paper, the option to hold the paper after printing, and so on. And if you really feel it's necessary, you can also change the ESC codes used by components, for example for other types of printers besides Epson and IBM. You simply create an instance of this class and redefine the ESC code according to your printer.
 
-Untuk lebih detilnya, silakan Anda pelajari *source code* dari komponen ini.
+For more details, please study *source code* of this component.
 
-Selamat mencoba dan semoga bermanfaat.
+Good luck and hopefully useful.
 
 -Bee
